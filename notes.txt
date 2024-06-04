@@ -1,0 +1,3 @@
+on the first record we can see the base value is negativ 1, but the contributions from feature Bank(target encoded) is pushing it towards more negative 
+
+Log_DisbursementGross, Log_NoEmp, Log_GrAppv, Log_SBA_Appv', Log_BalanceGross,Disbursement_Bins, Loan_Efficiency, Guarantee_Ratio', Loan_Guarantee_Interaction, and Disbursement_Square
