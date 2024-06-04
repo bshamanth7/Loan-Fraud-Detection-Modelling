@@ -83,4 +83,97 @@ Pick one model to train and tune from the below two options:
 First, split the dataset to Train/Validation/Test, before applying any encodings clean-up or feature engineering. 
 It is important to understand all the steps before model training, so that you can reliably replicate and test them to produce scoring function.
 
- 
+### Feature engineering
+
+You should train/fit categorical features encoders on Train only. Use `transform` or equivalent function on Validation/Test datasets.
+
+It is important to understand all the steps before model training, so that you can reliably replicate and test them to produce scoring function.
+
+
+You should generate various new features. Examples of such features can be seen in the Module-3 lecture on GLMs.  
+Your final model should have at least **10** new engineered features.   
+On-hot-encoding and target encoding **are not included in the** **10** features to create.    
+
+Ideas for Feature engineering for various types of variables:
+1. https://docs.h2o.ai/driverless-ai/1-10-lts/docs/userguide/transformations.html
+2. List of important features identified by DriverlessAI AutoML tool
+
+### Model performance in H2O Driverless AI (performance to aim for)
+
+I run experiments in DAI without any data manipulation. It means that potential improvement in performance can be gained with additional feature engineering. 
+AUC on hold-out: 0.855
+
+Top features:
+- CVTE:Bank:BankState:FranchiseCode:SBA_Appv.0
+- CVTE:Bank:BankState:NAICS:UrbanRural.0
+- WoE:Bank:BankState:NAICS.0
+
+
+CVTE: cross-validated target encoding
+WoE : weight of evidence 
+
+
+**Note**: 
+- You don't have to perform feature engineering using H2O-3 even if you decided to use H2O-3 GBM for model training.
+- It is OK to perform feature engineering using any technique, as long as you can replicate it correctly in the Scoring function.
+
+### Model Tuning
+
+- Hyper-parameter tuning. Your hyper-parameter search space should have at least 50 combinations.
+- To avoid overfitting and provide you with reasonable estimate of model performance on hold-out dataset, you will need to split your dataset as following:
+    - Train, will be used to train model
+    - Validation, will be used to validate model each round of training
+    - Testing, will be used to provide final performance metrics, used only once on the final model
+- Feature engineering. See project description
+- **Use AUC for all models and iterations, and don't switch between metrics.** For sure don't use accuracy, it is misleading metric for the imbalanced datasets.
+
+**Select final model that produces best performance on the Test dataset.**
+- For the best model, calculate probability threshold to maximize F1. 
+- Report final AUC metric and confusion matrix on the Test dataset using the threshold calculated above.
+
+  ### Threshold calculation
+
+You will need to calculate optimal threshold for class assignment using F1 metric:
+- If using sklearn, use F1 `macro`: `f1_score(y_true, y_pred, average='macro')` 
+- If using H2O-3, use F1
+
+You will need to find optimal probability threshold for class assignment, the threshold that maximizes above F1.
+
+
+### Scoring function
+
+The Project will be graded based on the completeness and performance of your final model against the hold-out dataset.
+The hold-out dataset provide in the eLearning. As part of your deliverables, you will need to submit a scoring function. 
+
+
+The scoring function will perform the following:
+- Accept dataset in the same format as provided with the project, minus "MIS_Status" column
+- Load trained model and any encoders/scalers that are needed to transform data
+- Transform dataset into format that can be scored with the trained model
+- Score the dataset and return the results, for each record
+    - **index** : Record ID
+    - **label** : Record label as determined by final model (0 or 1) you need to assign the label based on maximum F1 threshold
+    - **probability_0**	: probability of class 0
+    - **probability_1** : probability of class 1
+    
+See full example of scoring function in Project 1 description.
+Test your scoring function on the hold-out dataset provided in the eLearning, and validate that it returns the same number of records as in the hold-out dataset.
+
+
+### Deliverables in a single zip file in the following structure:
+- `notebook` (folder)
+    - Jupyter notebook with complete code to manipulate data, train and tune final model. `ipynb` format.
+    - Jupyter notebook with scoring function. `ipynb` format.
+- `artifacts` (folder)
+    - Model and any potential encoders in the "pkl" format or native H2O-3 format (for H2O-3 model)
+    - Scoring function that will load the final model and encoders. Separate from above notebook or `.py` file
+
+
+
+Your notebook should include explanations about your code and be designed to be easily followed and results replicated. Once you are done with the final version, you will need to test it by running all cells from top to bottom after restarting Kernel. It can be done by running `Kernel -> Restart & Run All`
+
+
+**Important**: To speed up progress, first produce working code using a small subset of the dataset.
+
+
+
