@@ -1,0 +1,5 @@
+if not os.path.isfile("./Artifacts/artifacts_dict_file.pkl"):
+    with open("./Artifacts/artifacts_dict_file.pkl","wb") as file:
+        pickle.dump(obj=artifacts_dict, file=artifacts_dict_file)
+else:
+    pickle.dump(obj=artifacts_dict, open("./Artifacts/artifacts_dict_file.pkl","wb"))
