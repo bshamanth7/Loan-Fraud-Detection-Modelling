@@ -35,4 +35,52 @@ The data set in question originates from the U.S. SBA loan database. It contains
 - **Use the libraries versions specified on eLearning.** For example, you should use H2O 3.42.0.2  
 - **Use Python 3.10.11.** If you use another version and your code doesn't work on 3.10.11, it will be considered a bug in your code.
 - **When running H2O and want to suppress long prints (for example model summary), include ";" at the end of the command.**
-- **Don't include the dataset with your deliverables.** 
+- **Don't include the dataset with your deliverables.**
+
+## Project Requirements Summary
+
+Project 2 is to facilitate students practice of the following Data Science concepts:
+- Train and tune classification model
+- Perform feature engineering to improve model performance
+- Explain/interpret and debug model
+
+- 
+## Tasks
+
+The project will include following tasks:
+- Load dataset. Don't use "index" column for training.
+- Clean up the data:
+    - Encode replace missing values
+    - Replace features values that appear incorrect
+    - Encode numerical variables that come as strings, for example string `$100.01` should be converted to numerical value
+- Encode categorical variables
+- Split dataset to Train/Test/Validation. If you perform cross-validation while tuning hyper-parameters, you don't need validation dataset.
+- Add engineered features. Simple encoding (Target encoding) for individual feature doesn't count to the 10 required engineered features
+- Train and tune ML models
+- Provide final metrics using Test (hold-out) dataset:
+    - Metric to report and optimize for **AUC**
+    - Confusion matrix for best F1
+- Interpret final trained model using Test dataset:
+    - Global feature importance using both Shapley values and permutation feature importance
+    - Summary plot with Shapley values 
+    - Explain what are the most important features and how they impact model predictions
+    - Individual observations analysis using Shapley values. Two records for each of the scenarios with significant probability:
+        - Label `0` is correctly identified
+        - Label `0` is identified as `1`
+        - Label `1` is correctly identified
+        - Label `1` is identified as `0`
+        - Significant probability means high probability of being correct/in-correct (depending on the scenario)
+    - Using residuals analysis identify and report common patterns in the errors made by the model
+
+
+## Model Training and Tuning
+
+Pick one model to train and tune from the below two options:
+- GBM (H2O)
+- LightGBM
+
+
+First, split the dataset to Train/Validation/Test, before applying any encodings clean-up or feature engineering. 
+It is important to understand all the steps before model training, so that you can reliably replicate and test them to produce scoring function.
+
+ 
