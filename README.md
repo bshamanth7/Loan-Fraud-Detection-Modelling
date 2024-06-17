@@ -44,7 +44,6 @@ Project 2 is to facilitate students practice of the following Data Science conce
 - Perform feature engineering to improve model performance
 - Explain/interpret and debug model
 
-- 
 ## Tasks
 
 The project will include following tasks:
